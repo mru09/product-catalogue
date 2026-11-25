@@ -15,6 +15,10 @@ npm run dev
 
 The backend reads `backend/.env`, connecting to `mongodb://127.0.0.1:27017/catalogue` by default. `frontend/.env.example` documents the frontend `VITE_API_URL` override.
 
+## Frontend
+
+The React application uses a shared header/layout and supports `/`, `/catalogue`, `/products/:id`, and `/login`. Unknown paths return to the home page. The API client uses `VITE_API_URL` (default `http://localhost:4000/api`), includes a stored `token` as a Bearer credential, and surfaces API error messages. Sign in with either seeded demo account to store a session token in local storage.
+
 ## Backend
 
 The Express application applies CORS restricted to `CLIENT_ORIGIN`, a 1 MB JSON body limit, and `GET /api/health` before mounting these route groups:
