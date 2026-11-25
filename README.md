@@ -24,7 +24,9 @@ The Express application applies CORS restricted to `CLIENT_ORIGIN`, a 1 MB JSON 
 - `/api/me`
 - `/api/enquiries`
 
-The routers are currently empty scaffolds. Unknown routes return `404` with `{ "message": "Route not found" }`. Errors are logged and return `500`; production responses hide the underlying error message.
+`POST /api/auth/login` accepts an email and password and returns a seven-day Bearer JWT for a matching user. The `/api/me` router requires that token; other feature routers are still scaffolds. Unknown routes return `404` with `{ "message": "Route not found" }`. Errors are logged and return `500`; production responses hide the underlying error message.
+
+Login is demo email/password authentication only. Seeded demo accounts use `demo123`; passwords are bcrypt-hashed and hashes are never returned by login. Protected requests must send `Authorization: Bearer <token>`.
 
 MongoDB must connect and schema indexes must initialize before the server listens. Product, User, and Rating Mongoose models are in `backend/src/models`.
 
@@ -43,4 +45,4 @@ This checkout did not contain the referenced source implementation or its descri
 
 ## Configuration and production security
 
-See `backend/.env.example` for backend configuration. Rotate `JWT_SECRET` from its development default before production, keep it secret, and provide it through secure deployment configuration. SMTP variables are present for future email support. Do not commit `.env` files, credentials, `node_modules`, or compiled output. Authentication and feature route handlers are not implemented yet; add production-grade authentication, authorization, validation, CORS configuration, TLS, logging, and operational protections before deployment.
+See `backend/.env.example` for backend configuration. Rotate `JWT_SECRET` from its development default before production, keep it secret, and provide it through secure deployment configuration. Demo authentication must be replaced with a production identity provider before public deployment. HTTPS, rate limiting, stronger input validation, and production CORS configuration are also required hardening. SMTP variables are present for future email support. Do not commit `.env` files, credentials, `node_modules`, or compiled output.
