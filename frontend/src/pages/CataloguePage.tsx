@@ -22,6 +22,20 @@ export default function CataloguePage() {
       .then(setProducts)
       .catch((e) => setError(e.message));
   }, [category, submitted]);
+  const topRatedProducts = category
+    ? products
+        .filter((product) => (product.averageRating ?? 0) > 3)
+        .sort(
+          (left, right) =>
+            (right.averageRating ?? 0) - (left.averageRating ?? 0) ||
+            left.title.localeCompare(right.title),
+        )
+        .slice(0, 5)
+    : [];
+  const topRatedIds = new Set(topRatedProducts.map((product) => product._id));
+  const additionalProducts = category
+    ? products.filter((product) => !topRatedIds.has(product._id))
+    : products;
   return (
     <section>
       <form
@@ -55,12 +69,20 @@ export default function CataloguePage() {
           </button>
         ))}
       </div>
-      <h2>
-        {submitted ? `Results for “${submitted}”` : category || "All products"}
-      </h2>
       {error && <p>{error}</p>}
       {products.length ? (
-        <ProductGrid products={products} />
+        <>
+          {topRatedProducts.length > 0 && (
+            <section aria-labelledby="top-rated-category-heading">
+              <h2 id="top-rated-category-heading">Top rated in {category}</h2>
+              <ProductGrid products={topRatedProducts} />
+            </section>
+          )}
+          {category && additionalProducts.length > 0 && (
+            <h2>{topRatedProducts.length > 0 ? `More in ${category}` : `Products in ${category}`}</h2>
+          )}
+          <ProductGrid products={additionalProducts} />
+        </>
       ) : (
         <p className="muted">No matching products found.</p>
       )}

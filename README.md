@@ -1,62 +1,63 @@
 # Product Catalogue
 
-React/TypeScript frontend and Express/TypeScript/MongoDB backend workspace.
+React 18/Vite 6 frontend and Express 4/Mongoose 8 backend in an npm workspace.
 
-## Requirements and setup
+## Requirements and local setup
 
-Requires Node.js 20 LTS or newer, npm, and an available MongoDB instance.
+- Node.js 20 LTS or newer and npm
+- MongoDB Community Server, running locally or available via a URI
+
+From the repository root:
 
 ```sh
 npm install
-Copy-Item backend/.env.example backend/.env
 npm run seed
 npm run dev
 ```
 
-The backend reads `backend/.env`, connecting to `mongodb://127.0.0.1:27017/catalogue` by default. `frontend/.env.example` documents the frontend `VITE_API_URL` override.
+Before seeding, create `backend/.env` and set `MONGODB_URI` if the default local database is not suitable. Backend configuration is loaded from `backend/.env`; supported variables and defaults:
 
-## Frontend
+| Variable | Default | Purpose |
+| --- | --- | --- |
+| `PORT` | `4000` | API port |
+| `MONGODB_URI` | `mongodb://127.0.0.1:27017/catalogue` | MongoDB connection |
+| `JWT_SECRET` | `change-this-development-secret` | Signing key for demo login tokens |
+| `CLIENT_ORIGIN` | `http://localhost:5173` | Allowed browser origin |
+| `NODE_ENV` | `development` | Error response mode |
+| `SMTP_HOST` | empty | SMTP server; required for enquiries |
+| `SMTP_PORT` | `587` | SMTP server port |
+| `SMTP_SECURE` | `false` | Use secure SMTP connection |
+| `SMTP_USER` / `SMTP_PASS` | empty | SMTP credentials |
+| `SMTP_FROM` | empty | Enquiry sender address |
 
-The React application uses a shared header/layout and supports `/`, `/catalogue`, `/products/:id`, and `/login`. The catalogue supports category tabs and submitted title search. Product detail supports authenticated ratings and public product enquiries. Unknown paths return to the home page. The API client uses `VITE_API_URL` (default `http://localhost:4000/api`), includes a stored `token` as a Bearer credential, and surfaces API error messages. The authentication context restores the stored user on reload; sign in with either seeded demo account to persist both user and token. Logged-in users see their personal top-rated products on the home page.
+Enquiry submission returns `503` until SMTP host, credentials, and sender are configured. The frontend defaults to `http://localhost:4000/api`; set `VITE_API_URL` in `frontend/.env` to override it (`frontend/.env.example` is provided).
 
-## Backend
+`npm run dev` starts both services. Open <http://localhost:5173>; API health is at <http://localhost:4000/api/health>.
 
-The Express application applies CORS restricted to `CLIENT_ORIGIN`, a 1 MB JSON body limit, and `GET /api/health` before mounting these route groups:
+## Demo accounts and seed
 
-- `/api/auth`
-- `/api/products`
-- `/api/me`
-- `/api/enquiries`
+Run `npm run seed` to upsert `mrunal@example.com` and `alex@example.com`, both with password `demo123`, and 120 products across 12 categories. User passwords are bcrypt-hashed. Products match on title and category; seeded descriptions and INR prices are defined in the seed data. Seeding sets average ratings to zero and does not delete user ratings.
 
-`POST /api/auth/login` accepts an email and password and returns a seven-day Bearer JWT for a matching user. All `/api/me` routes require that token. Product catalogue and enquiry submission routes are public:
+## Routes
 
-- `GET /api/products` — list products, optionally filtered by exact `category` and case-insensitive title query `q`.
-- `GET /api/products/categories` — list distinct categories.
-- `GET /api/products/:id` — get a product by MongoDB ID.
-- `GET /api/me` — list the authenticated user's ratings.
-- `GET /api/me/top-rated` — list rated products in rating/update order.
-- `PUT /api/me/products/:id` — save or replace the authenticated user's rating.
-- `POST /api/enquiries` — validate and email a product enquiry using configured SMTP.
+- `POST /api/auth/login` — demo login; returns a seven-day Bearer token.
+- `GET /api/products`, `/api/products/categories`, `/api/products/:id` — public catalogue.
+- `GET /api/me`, `/api/me/top-rated`, `PUT /api/me/products/:id` — authenticated ratings.
+- `POST /api/enquiries` — public enquiry email; requires SMTP configuration.
 
-Unknown routes return `404` with `{ "message": "Route not found" }`. Errors are logged and return `500`; production responses hide the underlying error message.
+The frontend routes are `/`, `/catalogue`, `/products/:id`, and `/login`.
 
-Login is demo email/password authentication only. Seeded demo accounts use `demo123`; passwords are bcrypt-hashed and hashes are never returned by login. Protected requests must send `Authorization: Bearer <token>`.
+## Build and tests
 
-MongoDB must connect and schema indexes must initialize before the server listens. Product, User, and Rating Mongoose models are in `backend/src/models`.
+```sh
+npm run build
+npm start
+npm test --workspace backend
+npm test --workspace frontend
+```
 
-## Seed data
+`npm start` serves the compiled backend from `backend/dist`; configure the same backend environment first. Tests run via Jest in each workspace.
 
-Run `npm run seed` to upsert the demo users (`mrunal@example.com` and `alex@example.com`, password `demo123`) and 10 products in each of 12 categories (120 total). User passwords are hashed with bcrypt cost 10. Products are identified by both title and category, seeded with placeholder images and a zero average rating. Ratings are not deleted. The seeder prints category and insert/update counts and disconnects after success or failure.
+## Production notes
 
-This checkout did not contain the referenced source implementation or its description/price values, so the seed currently uses generated descriptions and deterministic placeholder INR prices.
-
-## Commands
-
-- `npm run dev` — run backend and frontend development servers concurrently.
-- `npm run build` — build backend and frontend.
-- `npm start` — start the compiled backend.
-- `npm run seed` — seed MongoDB.
-
-## Configuration and production security
-
-See `backend/.env.example` for backend configuration. Rotate `JWT_SECRET` from its development default before production, keep it secret, and provide it through secure deployment configuration. Demo authentication must be replaced with a production identity provider before public deployment. HTTPS, rate limiting (especially for login and public enquiries), stronger input validation, and production CORS configuration are also required hardening. Configure SMTP credentials and `SMTP_FROM` to enable enquiry emails. Do not commit `.env` files, credentials, `node_modules`, or compiled output.
+Demo credentials and the default JWT secret are public development values. Rotate and protect `JWT_SECRET`; replace demo authentication with a production identity provider before public deployment. Configure HTTPS, rate limiting, production CORS, SMTP, monitoring, and secure database access. Do not commit `.env` files, secrets, or compiled output.

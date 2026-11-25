@@ -28,5 +28,13 @@ export async function saveRating(req: AuthRequest, res: Response) {
     { rating },
     { upsert: true, new: true, setDefaultsOnInsert: true },
   );
+  const [ratingSummary] = await Rating.aggregate([
+    { $match: { product: product._id } },
+    { $group: { _id: null, averageRating: { $avg: "$rating" } } },
+  ]);
+  await Product.updateOne(
+    { _id: product._id },
+    { $set: { averageRating: ratingSummary?.averageRating ?? 0 } },
+  );
   res.json({ message: "Your rating was saved", rating });
 }

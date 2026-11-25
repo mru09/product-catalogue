@@ -10,15 +10,21 @@ export default function HomePage() {
   const [error, setError] = useState("");
   useEffect(() => {
     let active = true;
-    if (user)
+    setError("");
+    if (user) {
       api<RatedProduct[]>("/me/top-rated")
         .then((x) => {
-          if (active) setRows(x);
+          if (active) {
+            setRows(x);
+            setError("");
+          }
         })
         .catch((e) => {
           if (active) setError(e.message);
         });
-    else setRows([]);
+    } else {
+      setRows([]);
+    }
     return () => {
       active = false;
     };

@@ -5,6 +5,7 @@ export interface Product {
   price: number;
   category: string;
   image: string;
+  averageRating?: number;
 }
 export interface User {
   id: string;

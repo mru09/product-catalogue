@@ -84,6 +84,36 @@ it("filters by category and marks it active", async () => {
   expect(screen.getByRole("button", { name: "Jewellery" })).toHaveClass("active");
 });
 
+it("shows only products rated above three in the top-rated section", async () => {
+  const user = userEvent.setup();
+  const categoryProducts: Product[] = [
+    { ...products[0], _id: "rated-low", title: "Rated Low", averageRating: 3.5 },
+    { ...products[0], _id: "rated-three", title: "Rated Three", averageRating: 3 },
+    { ...products[0], _id: "unrated", title: "Unrated", averageRating: 0 },
+    { ...products[0], _id: "rated-high", title: "Rated High", averageRating: 4.8 },
+  ];
+  apiMock.mockImplementation((path: string) => {
+    if (path === "/products/categories") return Promise.resolve(categories);
+    if (path === "/products?category=Jewellery") {
+      return Promise.resolve(categoryProducts);
+    }
+    return Promise.resolve(products);
+  });
+
+  renderCatalogue();
+  await user.click(await screen.findByRole("button", { name: "Jewellery" }));
+
+  expect(await screen.findByRole("heading", { name: "Top rated in Jewellery" })).toBeInTheDocument();
+  const top = screen.getByRole("link", { name: /Rated High/ });
+  const next = screen.getByRole("link", { name: /Rated Low/ });
+  const atThreshold = screen.getByRole("link", { name: /Rated Three/ });
+  const more = screen.getByRole("link", { name: /Unrated/ });
+  expect(top.compareDocumentPosition(next) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  expect(next.compareDocumentPosition(atThreshold) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  expect(atThreshold.compareDocumentPosition(more) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  expect(screen.getByRole("heading", { name: "More in Jewellery" })).toBeInTheDocument();
+});
+
 it("submits a product search", async () => {
   const user = userEvent.setup();
   renderCatalogue();
