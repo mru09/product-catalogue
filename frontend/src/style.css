@@ -239,6 +239,63 @@ h1 {
   margin-bottom: 0;
 }
 
+.catalogue-search {
+  display: flex;
+  width: min(520px, 100%);
+  gap: 10px;
+  margin: 0 0 24px;
+}
+
+.catalogue-search input {
+  min-width: 0;
+  min-height: 46px;
+  flex: 1;
+  padding: 0 13px;
+  border: 1px solid #c9c9bf;
+  border-radius: 2px;
+  background: var(--surface);
+  color: var(--ink);
+}
+
+.catalogue-search input:focus {
+  border-color: var(--green);
+  outline: 2px solid #52614833;
+}
+
+.catalogue-search .button {
+  margin-top: 0;
+}
+
+.category-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 30px;
+}
+
+.category-tabs button {
+  min-height: 34px;
+  padding: 0 13px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.category-tabs button:hover,
+.category-tabs button.active {
+  border-color: var(--green);
+  background: var(--green);
+  color: white;
+}
+
+.category-tabs .notice {
+  margin: 0 0 0 5px;
+}
+
 .notice {
   color: var(--muted);
   font-size: 14px;
@@ -256,6 +313,11 @@ h1 {
 
 .product-card {
   min-width: 0;
+  transition: transform 180ms ease;
+}
+
+.product-card:hover {
+  transform: translateY(-3px);
 }
 
 .product-card-image {
@@ -270,6 +332,10 @@ h1 {
   height: 100%;
   object-fit: cover;
   transition: transform 200ms ease;
+}
+
+.product-card-image img.image-hidden {
+  visibility: hidden;
 }
 
 .product-card-image:hover img {
@@ -475,6 +541,14 @@ h1 {
   .product-detail {
     width: 88%;
     padding-top: 48px;
+  }
+
+  .catalogue-search {
+    gap: 8px;
+  }
+
+  .catalogue-search .button {
+    padding: 0 15px;
   }
 
   .product-grid {

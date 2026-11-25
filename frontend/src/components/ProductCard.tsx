@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useState } from "react";
 import type { Product } from "../types";
 
 const priceFormatter = new Intl.NumberFormat("en-IN", {
@@ -14,10 +15,18 @@ export default function ProductCard({
   product: Product;
   rating?: number;
 }) {
+  const [imageError, setImageError] = useState(false);
+
   return (
     <article className="product-card">
       <Link className="product-card-image" to={`/products/${product._id}`}>
-        <img src={product.image} alt={product.title} loading="lazy" />
+        <img
+          src={product.image}
+          alt={product.title}
+          loading="lazy"
+          className={imageError ? "image-hidden" : undefined}
+          onError={() => setImageError(true)}
+        />
       </Link>
       <div className="product-card-copy">
         <p className="product-category">{product.category}</p>
