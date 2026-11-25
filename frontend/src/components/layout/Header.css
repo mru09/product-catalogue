@@ -1,0 +1,49 @@
+header {
+  height: 76px;
+  padding: 0 7%;
+  display: flex;
+  align-items: center;
+  gap: 42px;
+  border-bottom: 1px solid #e9e5dc;
+  background: #fff;
+}
+
+.brand {
+  font-weight: 800;
+  letter-spacing: 4px;
+  font-size: 20px;
+}
+
+nav {
+  display: flex;
+  gap: 26px;
+  font-size: 14px;
+}
+
+nav a.active {
+  color: #947b54;
+  font-weight: 700;
+}
+
+.account {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 14px;
+}
+
+@media (max-width: 650px) {
+  header {
+    padding: 0 18px;
+    gap: 16px;
+  }
+
+  nav {
+    gap: 12px;
+  }
+
+  .account span {
+    display: none;
+  }
+}

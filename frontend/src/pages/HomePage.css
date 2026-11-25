@@ -1,0 +1,32 @@
+.hero {
+  background: #eee9df;
+  padding: 76px 8%;
+  margin-bottom: 60px;
+}
+
+.hero p:not(.eyebrow) {
+  color: #67635c;
+  max-width: 440px;
+  line-height: 1.6;
+}
+
+.sectionhead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sectionhead a {
+  font-size: 13px;
+}
+
+.login-callout {
+  padding: 32px;
+  background: #f0ece4;
+}
+
+@media (max-width: 650px) {
+  .hero {
+    padding: 48px 24px;
+  }
+}

@@ -2,6 +2,7 @@ import { useEffect, useState, type FormEvent } from "react";
 import { Link, useParams } from "react-router-dom";
 import { api, getToken } from "../services/api";
 import type { Product, RatedProduct } from "../types";
+import "./ProductPage.css";
 export default function ProductPage() {
   const { id } = useParams();
   const [p, setP] = useState<Product | null>(null);

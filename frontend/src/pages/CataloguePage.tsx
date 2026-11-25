@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import ProductGrid from "../components/products/ProductGrid";
 import { api } from "../services/api";
 import type { Product } from "../types";
+import "./CataloguePage.css";
 export default function CataloguePage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<string[]>([]);

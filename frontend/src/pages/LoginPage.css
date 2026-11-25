@@ -1,0 +1,16 @@
+.login {
+  max-width: 420px;
+  margin: 30px auto;
+  background: white;
+  padding: 36px;
+  border: 1px solid #eee;
+}
+
+.login form {
+  display: flex;
+  flex-direction: column;
+}
+
+.login form button {
+  margin-top: 20px;
+}

@@ -4,6 +4,7 @@ import ProductGrid from "../components/products/ProductGrid";
 import { api } from "../services/api";
 import { useAuth } from "../context/AuthContext";
 import type { RatedProduct } from "../types";
+import "./HomePage.css";
 export default function HomePage() {
   const { user } = useAuth();
   const [rows, setRows] = useState<RatedProduct[]>([]);
@@ -43,17 +44,10 @@ export default function HomePage() {
           {error ? (
             <p>{error}</p>
           ) : rows.length ? (
-            <>
-              <div className="rated">
-                {rows.map((x) => (
-                  <span key={x.product._id}>
-                    {"★".repeat(x.rating)}
-                    {"☆".repeat(5 - x.rating)} · {x.product.title}
-                  </span>
-                ))}
-              </div>
-              <ProductGrid products={rows.map((x) => x.product)} />
-            </>
+            <ProductGrid
+              products={rows.map((x) => x.product)}
+              showRatings
+            />
           ) : (
             <p className="muted">
               You haven’t rated any products yet. Browse the catalogue and rate

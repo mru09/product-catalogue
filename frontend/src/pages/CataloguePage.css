@@ -1,0 +1,31 @@
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 24px 0;
+}
+
+.tabs button {
+  background: #eee;
+  color: #38362f;
+}
+
+.tabs button.active {
+  background: #292821;
+  color: #fff;
+}
+
+.search {
+  display: flex;
+  gap: 8px;
+  max-width: 560px;
+  margin: 24px 0;
+}
+
+.search input {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid #ddd;
+  background: white;
+  font: inherit;
+}

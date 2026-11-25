@@ -24,6 +24,7 @@ const ratedProducts: RatedProduct[] = [
       price: 40,
       category: "Home",
       image: "/lamp.jpg",
+      averageRating: 4.5,
     },
     rating: 5,
   },
@@ -53,6 +54,10 @@ it("shows the logged-in user's rated products", async () => {
   expect(
     await screen.findByRole("heading", { name: "Desk Lamp" }),
   ).toBeInTheDocument();
+  expect(
+    screen.getByRole("img", { name: "4.5 out of 5 stars" }),
+  ).toBeInTheDocument();
+  expect(screen.queryByText("★★★★★ · Desk Lamp")).not.toBeInTheDocument();
   expect(apiMock).toHaveBeenCalledWith("/me/top-rated");
 });
 

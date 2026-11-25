@@ -1,0 +1,75 @@
+.detail {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 50px;
+  align-items: start;
+}
+
+.detail > img {
+  width: 100%;
+  max-height: 520px;
+  object-fit: cover;
+  background: #eee;
+}
+
+.detail p {
+  line-height: 1.7;
+  color: #666;
+}
+
+.detail label,
+form label {
+  display: block;
+  margin: 22px 0 8px;
+  font-size: 13px;
+}
+
+.stars {
+  margin: 10px 0 18px;
+}
+
+.stars button {
+  background: transparent;
+  color: #bbb;
+  font-size: 25px;
+  padding: 3px;
+}
+
+.stars button.selected {
+  color: #b08a3e;
+}
+
+.enquiry-form {
+  display: flex;
+  flex-direction: column;
+  max-width: 420px;
+  margin: 20px 0;
+}
+
+.enquiry-form label {
+  margin: 12px 0 6px;
+}
+
+.enquiry-form textarea {
+  padding: 12px;
+  border: 1px solid #ddd;
+  background: white;
+  font: inherit;
+  resize: vertical;
+}
+
+.enquiry-form button {
+  margin-top: 16px;
+}
+
+.enquiry-form button:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
+@media (max-width: 650px) {
+  .detail {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}

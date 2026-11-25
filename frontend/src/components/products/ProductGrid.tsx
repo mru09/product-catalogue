@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
+import { useState } from "react";
 import type { Product } from "../../types";
+import "./ProductGrid.css";
 export default function ProductGrid({
   products,
   showRatings = false,
@@ -7,6 +9,8 @@ export default function ProductGrid({
   products: Product[];
   showRatings?: boolean;
 }) {
+  const [failedImages, setFailedImages] = useState(() => new Set<string>());
+
   return (
     <div className="grid">
       {products.map((p) => (
@@ -15,9 +19,14 @@ export default function ProductGrid({
             src={p.image}
             alt={p.title}
             loading="lazy"
-            onError={(e) => {
-              e.currentTarget.style.visibility = "hidden";
-            }}
+            className={failedImages.has(p._id) ? "image-hidden" : undefined}
+            onError={() =>
+              setFailedImages((current) => {
+                const next = new Set(current);
+                next.add(p._id);
+                return next;
+              })
+            }
           />
           <div className="pad">
             <small>{p.category}</small>

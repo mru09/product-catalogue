@@ -4,6 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { api } from "../services/api";
 import type { Product, RatedProduct } from "../types";
+import "./ProductDetailPage.css";
 
 type ProductState =
   | { status: "loading" }

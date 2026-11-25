@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import type { Product } from "../types";
+import "./ProductCard.css";
 
 const priceFormatter = new Intl.NumberFormat("en-IN", {
   style: "currency",

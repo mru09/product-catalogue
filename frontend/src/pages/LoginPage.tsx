@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import "./LoginPage.css";
 export default function LoginPage() {
   const [email, setEmail] = useState("mrunal@example.com");
   const [password, setPassword] = useState("demo123");
