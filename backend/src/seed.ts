@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 import { Product, User } from "./models/index.js";
 
 const MONGODB_URI =
-  process.env.MONGODB_URI ?? "mongodb://127.0.0.1:27017/lumora_catalogue";
+  process.env.MONGODB_URI ?? "mongodb://127.0.0.1:27017/catalogue";
 
 type SeedProduct = {
   title: string;
@@ -637,7 +637,7 @@ const productSeedData: SeedProduct[] = catalogue.flatMap(
     products.map((product) => ({
       ...product,
       category,
-      image: `https://placehold.co/600x600?text=${encodeURIComponent(product.title)}`,
+      image: `/images/fallback.svg`,
     })),
 );
 
