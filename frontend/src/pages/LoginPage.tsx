@@ -1,12 +1,13 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { login } from "../services/api";
+import { useAuth } from "../context/AuthContext";
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const { login } = useAuth();
+  const [email, setEmail] = useState("mrunal@example.com");
+  const [password, setPassword] = useState("demo123");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
 
@@ -15,9 +16,8 @@ export default function LoginPage() {
     setSubmitting(true);
     setError("");
     try {
-      const result = await login(email, password);
-      localStorage.setItem("token", result.token);
-      navigate("/catalogue");
+      await login(email, password);
+      navigate("/", { replace: true });
     } catch (requestError: unknown) {
       setError(requestError instanceof Error ? requestError.message : "Unable to sign in");
     } finally {
@@ -29,7 +29,7 @@ export default function LoginPage() {
     <section className="login-section">
       <div className="login-card">
         <p className="eyebrow">WELCOME BACK</p>
-        <h1>Sign in</h1>
+        <h1>Demo login</h1>
         <p className="login-help">Use a demo account to explore the catalogue.</p>
         <form className="login-form" onSubmit={handleSubmit}>
           <label htmlFor="email">Email</label>
@@ -57,7 +57,8 @@ export default function LoginPage() {
           {submitting && <p className="visually-hidden" role="status">Signing in</p>}
         </form>
         <p className="demo-hint">
-          Demo: <code>mrunal@example.com</code> / <code>demo123</code>
+          Mrunal: <code>mrunal@example.com</code> / <code>demo123</code><br />
+          Alex: <code>alex@example.com</code> / <code>demo123</code>
         </p>
         <Link className="text-link" to="/catalogue">Continue browsing</Link>
       </div>

@@ -1,6 +1,9 @@
 import { Link, NavLink } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 export default function Header() {
+  const { user, logout } = useAuth();
+
   return (
     <header className="site-header">
       <Link className="brand" to="/" aria-label="Product Catalogue home">
@@ -8,8 +11,16 @@ export default function Header() {
         <span>FORM &amp; FIND</span>
       </Link>
       <nav className="main-nav" aria-label="Main navigation">
+        <NavLink to="/" end>Home</NavLink>
         <NavLink to="/catalogue">Catalogue</NavLink>
-        <NavLink to="/login">Sign in</NavLink>
+        {user ? (
+          <div className="account-controls">
+            <span className="greeting">Hi, {user.name}</span>
+            <button className="logout-button" type="button" onClick={logout}>Logout</button>
+          </div>
+        ) : (
+          <NavLink to="/login">Login</NavLink>
+        )}
       </nav>
     </header>
   );

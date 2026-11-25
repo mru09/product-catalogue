@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { api } from "../services/api";
 import type { Product } from "../types";
-import ProductCard from "../components/ProductCard";
+import ProductGrid from "../components/ProductGrid";
 
 type CatalogueState =
   | { status: "loading" }
@@ -38,9 +38,7 @@ export default function CataloguePage() {
         <p className="notice" role="status">No products are available yet.</p>
       )}
       {state.status === "ready" && state.products.length > 0 && (
-        <div className="product-grid">
-          {state.products.map((product) => <ProductCard key={product._id} product={product} />)}
-        </div>
+        <ProductGrid products={state.products} />
       )}
     </section>
   );
