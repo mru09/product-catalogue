@@ -172,6 +172,12 @@ small {
     font-size: 14px
 }
 
+.catalogue-rating {
+    color: #b08a3e;
+    font-size: 14px;
+    margin: 0 0 12px
+}
+
 .tabs {
     display: flex;
     flex-wrap: wrap;

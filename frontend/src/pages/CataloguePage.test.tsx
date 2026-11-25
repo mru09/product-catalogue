@@ -108,6 +108,8 @@ it("shows only products rated above three in the top-rated section", async () =>
   const next = screen.getByRole("link", { name: /Rated Low/ });
   const atThreshold = screen.getByRole("link", { name: /Rated Three/ });
   const more = screen.getByRole("link", { name: /Unrated/ });
+  expect(screen.getByRole("img", { name: "4.8 out of 5 stars" })).toBeInTheDocument();
+  expect(screen.queryByRole("img", { name: "3.0 out of 5 stars" })).not.toBeInTheDocument();
   expect(top.compareDocumentPosition(next) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   expect(next.compareDocumentPosition(atThreshold) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   expect(atThreshold.compareDocumentPosition(more) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();

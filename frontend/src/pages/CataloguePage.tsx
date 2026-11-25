@@ -75,7 +75,7 @@ export default function CataloguePage() {
           {topRatedProducts.length > 0 && (
             <section aria-labelledby="top-rated-category-heading">
               <h2 id="top-rated-category-heading">Top rated in {category}</h2>
-              <ProductGrid products={topRatedProducts} />
+              <ProductGrid products={topRatedProducts} showRatings />
             </section>
           )}
           {category && additionalProducts.length > 0 && (
