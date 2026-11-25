@@ -24,7 +24,13 @@ The Express application applies CORS restricted to `CLIENT_ORIGIN`, a 1 MB JSON 
 - `/api/me`
 - `/api/enquiries`
 
-`POST /api/auth/login` accepts an email and password and returns a seven-day Bearer JWT for a matching user. The `/api/me` router requires that token; other feature routers are still scaffolds. Unknown routes return `404` with `{ "message": "Route not found" }`. Errors are logged and return `500`; production responses hide the underlying error message.
+`POST /api/auth/login` accepts an email and password and returns a seven-day Bearer JWT for a matching user. The `/api/me` router requires that token; enquiry routes remain a scaffold. Product catalogue routes are public:
+
+- `GET /api/products` — list products, optionally filtered by exact `category` and case-insensitive title query `q`.
+- `GET /api/products/categories` — list distinct categories.
+- `GET /api/products/:id` — get a product by MongoDB ID.
+
+Unknown routes return `404` with `{ "message": "Route not found" }`. Errors are logged and return `500`; production responses hide the underlying error message.
 
 Login is demo email/password authentication only. Seeded demo accounts use `demo123`; passwords are bcrypt-hashed and hashes are never returned by login. Protected requests must send `Authorization: Bearer <token>`.
 
