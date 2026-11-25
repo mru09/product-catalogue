@@ -1,0 +1,83 @@
+.product-detail {
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 24px;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 50px;
+  align-items: start;
+}
+
+.detail-image {
+  width: 100%;
+  max-height: 520px;
+  object-fit: cover;
+  background: #eee;
+}
+
+.detail-price {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.detail-description {
+  color: #666;
+  line-height: 1.7;
+}
+
+.rating-panel,
+.enquiry-panel {
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid #e9e5dc;
+}
+
+.rating-stars button {
+  background: transparent;
+  color: #bbb;
+  font-size: 25px;
+  padding: 3px;
+}
+
+.rating-stars button.selected {
+  color: #b08a3e;
+}
+
+.enquiry-heading-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.enquiry-form {
+  display: flex;
+  flex-direction: column;
+  max-width: 420px;
+  margin-top: 20px;
+}
+
+.enquiry-form label {
+  display: block;
+  margin: 12px 0 6px;
+  font-size: 13px;
+}
+
+.enquiry-form input,
+.enquiry-form textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  background: #fff;
+  font: inherit;
+}
+
+.enquiry-form textarea {
+  resize: vertical;
+}

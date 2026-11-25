@@ -1,0 +1,36 @@
+.site-header {
+  height: 76px;
+  padding: 0 7%;
+  display: flex;
+  align-items: center;
+  gap: 42px;
+  border-bottom: 1px solid #e9e5dc;
+  background: #fff;
+}
+
+.main-nav {
+  display: flex;
+  gap: 26px;
+  font-size: 14px;
+}
+
+.main-nav a.active {
+  color: #947b54;
+  font-weight: 700;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 800;
+  letter-spacing: 4px;
+  font-size: 20px;
+}
+
+.account-controls {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}

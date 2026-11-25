@@ -1,0 +1,13 @@
+{
+  "name": "product-catalogue",
+  "private": true,
+  "engines": { "node": ">=20" },
+  "workspaces": ["backend", "frontend"],
+  "scripts": {
+    "dev": "concurrently -k -n backend,frontend \"npm run dev --workspace backend\" \"npm run dev --workspace frontend\"",
+    "build": "npm run build --workspace backend && npm run build --workspace frontend",
+    "seed": "npm run seed --workspace backend",
+    "start": "npm run start --workspace backend"
+  },
+  "devDependencies": { "concurrently": "^9.1.2" }
+}
