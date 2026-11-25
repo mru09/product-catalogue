@@ -24,11 +24,15 @@ The Express application applies CORS restricted to `CLIENT_ORIGIN`, a 1 MB JSON 
 - `/api/me`
 - `/api/enquiries`
 
-`POST /api/auth/login` accepts an email and password and returns a seven-day Bearer JWT for a matching user. The `/api/me` router requires that token; enquiry routes remain a scaffold. Product catalogue routes are public:
+`POST /api/auth/login` accepts an email and password and returns a seven-day Bearer JWT for a matching user. All `/api/me` routes require that token. Product catalogue and enquiry submission routes are public:
 
 - `GET /api/products` — list products, optionally filtered by exact `category` and case-insensitive title query `q`.
 - `GET /api/products/categories` — list distinct categories.
 - `GET /api/products/:id` — get a product by MongoDB ID.
+- `GET /api/me` — list the authenticated user's ratings.
+- `GET /api/me/top-rated` — list rated products in rating/update order.
+- `PUT /api/me/products/:id` — save or replace the authenticated user's rating.
+- `POST /api/enquiries` — validate and email a product enquiry using configured SMTP.
 
 Unknown routes return `404` with `{ "message": "Route not found" }`. Errors are logged and return `500`; production responses hide the underlying error message.
 
@@ -51,4 +55,4 @@ This checkout did not contain the referenced source implementation or its descri
 
 ## Configuration and production security
 
-See `backend/.env.example` for backend configuration. Rotate `JWT_SECRET` from its development default before production, keep it secret, and provide it through secure deployment configuration. Demo authentication must be replaced with a production identity provider before public deployment. HTTPS, rate limiting, stronger input validation, and production CORS configuration are also required hardening. SMTP variables are present for future email support. Do not commit `.env` files, credentials, `node_modules`, or compiled output.
+See `backend/.env.example` for backend configuration. Rotate `JWT_SECRET` from its development default before production, keep it secret, and provide it through secure deployment configuration. Demo authentication must be replaced with a production identity provider before public deployment. HTTPS, rate limiting (especially for login and public enquiries), stronger input validation, and production CORS configuration are also required hardening. Configure SMTP credentials and `SMTP_FROM` to enable enquiry emails. Do not commit `.env` files, credentials, `node_modules`, or compiled output.

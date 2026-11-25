@@ -1,32 +1,23 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import type { Request, Response } from "express";
+import { User } from "../../models/index.js";
 import { env } from "../../config/env.js";
-import { User } from "../../models/User.js";
-
-export async function login(request: Request, response: Response): Promise<void> {
-  const email = String(request.body?.email ?? "").trim().toLowerCase();
-  const password = String(request.body?.password ?? "");
-
-  if (!email || !password) {
-    response.status(400).json({ message: "Email and password are required" });
-    return;
-  }
-
+export async function login(req: Request, res: Response) {
+  const email = String(req.body.email || "")
+    .trim()
+    .toLowerCase();
+  const password = String(req.body.password || "");
+  if (!email || !password)
+    return res.status(400).json({ message: "Email and password are required" });
   const user = await User.findOne({ email });
-  if (!user?.passwordHash || !(await bcrypt.compare(password, user.passwordHash))) {
-    response.status(401).json({ message: "Invalid email or password" });
-    return;
-  }
-
-  const userId = user._id.toString();
-  const token = jwt.sign({ userId }, env.jwtSecret, { expiresIn: "7d" });
-  response.json({
+  if (!user || !(await bcrypt.compare(password, user.passwordHash || "")))
+    return res.status(401).json({ message: "Invalid email or password" });
+  const token = jwt.sign({ userId: user.id }, env.jwtSecret, {
+    expiresIn: "7d",
+  });
+  return res.json({
     token,
-    user: {
-      id: userId,
-      name: user.name ?? "",
-      email
-    }
+    user: { id: user.id, name: user.name, email: user.email },
   });
 }
