@@ -1,54 +1,31 @@
-import type { LoginResponse } from "../types";
-
-export const apiBaseUrl = (
-  import.meta.env.VITE_API_URL ?? "http://localhost:4000/api"
-).replace(/\/+$/, "");
-
-interface ApiError {
-  message?: unknown;
+import type { User } from "../types/index";
+const API_BASE_URL =
+  import.meta.env.VITE_API_URL || "http://localhost:4000/api";
+export function getToken() {
+  return localStorage.getItem("token") || "";
 }
-
-function isApiError(value: unknown): value is ApiError {
-  return typeof value === "object" && value !== null;
-}
-
-export async function api<T>(path: string, options: RequestInit = {}): Promise<T> {
-  const headers = new Headers({
-    "Content-Type": "application/json"
-  });
-  const token = typeof localStorage === "undefined" ? null : localStorage.getItem("token");
-  if (token) {
-    headers.set("Authorization", `Bearer ${token}`);
-  }
-  new Headers(options.headers).forEach((value, key) => headers.set(key, value));
-
-  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
-  const response = await fetch(`${apiBaseUrl}${normalizedPath}`, {
+export async function api<T>(
+  path: string,
+  options: RequestInit = {},
+): Promise<T> {
+  const headers: HeadersInit = {
+    "Content-Type": "application/json",
+    ...(getToken() ? { Authorization: `Bearer ${getToken()}` } : {}),
+    ...options.headers,
+  };
+  const response = await fetch(`${API_BASE_URL}${path}`, {
     ...options,
-    headers
+    headers,
   });
-
-  let data: unknown;
-  try {
-    data = await response.json();
-  } catch {
-    data = { message: "Invalid server response" };
-  }
-
-  if (!response.ok) {
-    const message =
-      isApiError(data) && typeof data.message === "string" && data.message
-        ? data.message
-        : "Request failed";
-    throw new Error(message);
-  }
-
+  const data = await response
+    .json()
+    .catch(() => ({ message: "Invalid server response" }));
+  if (!response.ok) throw new Error(data.message || "Request failed");
   return data as T;
 }
-
-export function login(email: string, password: string): Promise<LoginResponse> {
-  return api<LoginResponse>("/auth/login", {
+export async function login(email: string, password: string) {
+  return api<{ token: string; user: User }>("/auth/login", {
     method: "POST",
-    body: JSON.stringify({ email, password })
+    body: JSON.stringify({ email, password }),
   });
 }

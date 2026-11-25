@@ -17,7 +17,7 @@ The backend reads `backend/.env`, connecting to `mongodb://127.0.0.1:27017/catal
 
 ## Frontend
 
-The React application uses a shared header/layout and supports `/`, `/catalogue`, `/products/:id`, and `/login`. The catalogue supports category tabs and submitted title search. Unknown paths return to the home page. The API client uses `VITE_API_URL` (default `http://localhost:4000/api`), includes a stored `token` as a Bearer credential, and surfaces API error messages. The authentication context restores the stored user on reload; sign in with either seeded demo account to persist both user and token. Logged-in users see their personal top-rated products on the home page.
+The React application uses a shared header/layout and supports `/`, `/catalogue`, `/products/:id`, and `/login`. The catalogue supports category tabs and submitted title search. Product detail supports authenticated ratings and public product enquiries. Unknown paths return to the home page. The API client uses `VITE_API_URL` (default `http://localhost:4000/api`), includes a stored `token` as a Bearer credential, and surfaces API error messages. The authentication context restores the stored user on reload; sign in with either seeded demo account to persist both user and token. Logged-in users see their personal top-rated products on the home page.
 
 ## Backend
 
